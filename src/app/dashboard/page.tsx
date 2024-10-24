@@ -16,33 +16,37 @@ import {
 
 export default function Page() {
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "350px",
+        } as React.CSSProperties
+      }
+    >
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-white p-4 dark:bg-gray-950">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
+                <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                <BreadcrumbPage>Inbox</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-gray-100/50 dark:bg-gray-800/50" />
-            <div className="aspect-video rounded-xl bg-gray-100/50 dark:bg-gray-800/50" />
-            <div className="aspect-video rounded-xl bg-gray-100/50 dark:bg-gray-800/50" />
-          </div>
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-gray-100/50 md:min-h-min dark:bg-gray-800/50" />
+          {Array.from({ length: 24 }).map((_, index) => (
+            <div
+              key={index}
+              className="aspect-video h-12 w-full rounded-lg bg-gray-100/50 dark:bg-gray-800/50"
+            />
+          ))}
         </div>
       </SidebarInset>
     </SidebarProvider>
