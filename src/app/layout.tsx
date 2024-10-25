@@ -1,18 +1,26 @@
-"use client"
-
 import * as React from "react"
 import {
-    ArchiveX,
+    AudioWaveform,
     BadgeCheck,
     Bell,
+    BookOpen,
+    Bot,
+    ChevronRight,
     ChevronsUpDown,
     Command,
     CreditCard,
-    File,
-    Inbox,
+    Folder,
+    Forward,
+    Frame,
+    GalleryVerticalEnd,
     LogOut,
-    Send,
+    Map,
+    MoreHorizontal,
+    PieChart,
+    Plus,
+    Settings2,
     Sparkles,
+    SquareTerminal,
     Trash2,
 } from "lucide-react"
 
@@ -30,393 +38,438 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible"
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuSeparator,
+    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
     SidebarGroup,
-    SidebarGroupContent,
+    SidebarGroupLabel,
     SidebarHeader,
-    SidebarInput,
     SidebarInset,
     SidebarMenu,
+    SidebarMenuAction,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
     SidebarProvider,
+    SidebarRail,
     SidebarTrigger,
-    useSidebar,
 } from "@/components/ui/sidebar"
-import { Switch } from "@/components/ui/switch"
-
-// This is sample data
+// This is sample data.
 const data = {
     user: {
         name: "shadcn",
         email: "m@example.com",
         avatar: "/avatars/shadcn.jpg",
     },
-    navMain: [
+    teams: [
         {
-            title: "Inbox",
-            url: "#",
-            icon: Inbox,
-            isActive: true,
+            name: "Acme Inc",
+            logo: GalleryVerticalEnd,
+            plan: "Enterprise",
         },
         {
-            title: "Drafts",
-            url: "#",
-            icon: File,
-            isActive: false,
+            name: "Acme Corp.",
+            logo: AudioWaveform,
+            plan: "Startup",
         },
         {
-            title: "Sent",
-            url: "#",
-            icon: Send,
-            isActive: false,
-        },
-        {
-            title: "Junk",
-            url: "#",
-            icon: ArchiveX,
-            isActive: false,
-        },
-        {
-            title: "Trash",
-            url: "#",
-            icon: Trash2,
-            isActive: false,
+            name: "Evil Corp.",
+            logo: Command,
+            plan: "Free",
         },
     ],
-    mails: [
+    navMain: [
         {
-            name: "William Smith",
-            email: "williamsmith@example.com",
-            subject: "Meeting Tomorrow",
-            date: "09:34 AM",
-            teaser:
-              "Hi team, just a reminder about our meeting tomorrow at 10 AM.\nPlease come prepared with your project updates.",
+            title: "Playground",
+            url: "#",
+            icon: SquareTerminal,
+            isActive: true,
+            items: [
+                {
+                    title: "History",
+                    url: "#",
+                },
+                {
+                    title: "Starred",
+                    url: "#",
+                },
+                {
+                    title: "Settings",
+                    url: "#",
+                },
+            ],
         },
         {
-            name: "Alice Smith",
-            email: "alicesmith@example.com",
-            subject: "Re: Project Update",
-            date: "Yesterday",
-            teaser:
-              "Thanks for the update. The progress looks great so far.\nLet's schedule a call to discuss the next steps.",
+            title: "Models",
+            url: "#",
+            icon: Bot,
+            items: [
+                {
+                    title: "Genesis",
+                    url: "#",
+                },
+                {
+                    title: "Explorer",
+                    url: "#",
+                },
+                {
+                    title: "Quantum",
+                    url: "#",
+                },
+            ],
         },
         {
-            name: "Bob Johnson",
-            email: "bobjohnson@example.com",
-            subject: "Weekend Plans",
-            date: "2 days ago",
-            teaser:
-              "Hey everyone! I'm thinking of organizing a team outing this weekend.\nWould you be interested in a hiking trip or a beach day?",
+            title: "Documentation",
+            url: "#",
+            icon: BookOpen,
+            items: [
+                {
+                    title: "Introduction",
+                    url: "#",
+                },
+                {
+                    title: "Get Started",
+                    url: "#",
+                },
+                {
+                    title: "Tutorials",
+                    url: "#",
+                },
+                {
+                    title: "Changelog",
+                    url: "#",
+                },
+            ],
         },
         {
-            name: "Emily Davis",
-            email: "emilydavis@example.com",
-            subject: "Re: Question about Budget",
-            date: "2 days ago",
-            teaser:
-              "I've reviewed the budget numbers you sent over.\nCan we set up a quick call to discuss some potential adjustments?",
+            title: "Settings",
+            url: "#",
+            icon: Settings2,
+            items: [
+                {
+                    title: "General",
+                    url: "#",
+                },
+                {
+                    title: "Team",
+                    url: "#",
+                },
+                {
+                    title: "Billing",
+                    url: "#",
+                },
+                {
+                    title: "Limits",
+                    url: "#",
+                },
+            ],
+        },
+    ],
+    projects: [
+        {
+            name: "Design Engineering",
+            url: "#",
+            icon: Frame,
         },
         {
-            name: "Michael Wilson",
-            email: "michaelwilson@example.com",
-            subject: "Important Announcement",
-            date: "1 week ago",
-            teaser:
-              "Please join us for an all-hands meeting this Friday at 3 PM.\nWe have some exciting news to share about the company's future.",
+            name: "Sales & Marketing",
+            url: "#",
+            icon: PieChart,
         },
         {
-            name: "Sarah Brown",
-            email: "sarahbrown@example.com",
-            subject: "Re: Feedback on Proposal",
-            date: "1 week ago",
-            teaser:
-              "Thank you for sending over the proposal. I've reviewed it and have some thoughts.\nCould we schedule a meeting to discuss my feedback in detail?",
-        },
-        {
-            name: "David Lee",
-            email: "davidlee@example.com",
-            subject: "New Project Idea",
-            date: "1 week ago",
-            teaser:
-              "I've been brainstorming and came up with an interesting project concept.\nDo you have time this week to discuss its potential impact and feasibility?",
-        },
-        {
-            name: "Olivia Wilson",
-            email: "oliviawilson@example.com",
-            subject: "Vacation Plans",
-            date: "1 week ago",
-            teaser:
-              "Just a heads up that I'll be taking a two-week vacation next month.\nI'll make sure all my projects are up to date before I leave.",
-        },
-        {
-            name: "James Martin",
-            email: "jamesmartin@example.com",
-            subject: "Re: Conference Registration",
-            date: "1 week ago",
-            teaser:
-              "I've completed the registration for the upcoming tech conference.\nLet me know if you need any additional information from my end.",
-        },
-        {
-            name: "Sophia White",
-            email: "sophiawhite@example.com",
-            subject: "Team Dinner",
-            date: "1 week ago",
-            teaser:
-              "To celebrate our recent project success, I'd like to organize a team dinner.\nAre you available next Friday evening? Please let me know your preferences.",
+            name: "Travel",
+            url: "#",
+            icon: Map,
         },
     ],
 }
 
 export default function Page() {
-    return (
-      <SidebarProvider
-        style={
-            {
-                "--sidebar-width": "350px",
-            } as React.CSSProperties
-        }
-      >
-          <AppSidebar />
-          <SidebarInset>
-              <header className="sticky top-0 flex shrink-0 items-center gap-2  bg-background p-4">
-                  <SidebarTrigger className="-ml-1" />
-                  <Separator orientation="vertical" className="mr-2 h-4" />
-                  <Breadcrumb>
-                      <BreadcrumbList>
-                          <BreadcrumbItem className="hidden md:block">
-                              <BreadcrumbLink href="#">All Inboxes</BreadcrumbLink>
-                          </BreadcrumbItem>
-                          <BreadcrumbSeparator className="hidden md:block" />
-                          <BreadcrumbItem>
-                              <BreadcrumbPage>Inbox</BreadcrumbPage>
-                          </BreadcrumbItem>
-                      </BreadcrumbList>
-                  </Breadcrumb>
-              </header>
-              <div className="flex flex-1 flex-col gap-4 p-4">
-                  {Array.from({ length: 24 }).map((_, index) => (
-                    <div
-                      key={index}
-                      className="aspect-video h-12 w-full rounded-lg bg-muted/50"
-                    />
-                  ))}
-              </div>
-          </SidebarInset>
-      </SidebarProvider>
-    )
-}
-
-function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    // Note: I'm using state to show active item.
-    // IRL you should use the url/router.
-    const [activeItem, setActiveItem] = React.useState(data.navMain[0])
-    const [mails, setMails] = React.useState(data.mails)
-    const { setOpen } = useSidebar()
+    const [activeTeam, setActiveTeam] = React.useState(data.teams[0])
 
     return (
-      <Sidebar
-        collapsible="icon"
-        className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
-        {...props}
-      >
-          {/* This is the first sidebar */}
-          {/* We disable collapsible and adjust width to icon. */}
-          {/* This will make the sidebar appear as icons. */}
-          <Sidebar
-            collapsible="none"
-            className="!w-[calc(var(--sidebar-width-icon)_+_1px)]"
-          >
-              <SidebarHeader>
-                  <SidebarMenu>
-                      <SidebarMenuItem>
-                          <SidebarMenuButton size="lg" asChild className="md:h-8 md:p-0">
-                              <a href="#">
-                                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                      <Command className="size-4" />
-                                  </div>
-                                  <div className="grid flex-1 text-left text-sm leading-tight">
-                                      <span className="truncate font-semibold">Acme Inc</span>
-                                      <span className="truncate text-xs">Enterprise</span>
-                                  </div>
-                              </a>
-                          </SidebarMenuButton>
-                      </SidebarMenuItem>
-                  </SidebarMenu>
-              </SidebarHeader>
-              <SidebarContent>
-                  <SidebarGroup>
-                      <SidebarGroupContent className="px-1.5 md:px-0">
-                          <SidebarMenu>
-                              {data.navMain.map((item) => (
-                                <SidebarMenuItem key={item.title}>
+        <SidebarProvider>
+            <Sidebar collapsible="icon">
+                <SidebarHeader>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
                                     <SidebarMenuButton
-                                      tooltip={{
-                                          children: item.title,
-                                          hidden: false,
-                                      }}
-                                      onClick={() => {
-                                          setActiveItem(item)
-                                          const mail = data.mails.sort(() => Math.random() - 0.5)
-                                          setMails(
-                                            mail.slice(
-                                              0,
-                                              Math.max(5, Math.floor(Math.random() * 10) + 1)
-                                            )
-                                          )
-                                          setOpen(true)
-                                      }}
-                                      isActive={activeItem.title === item.title}
-                                      className="px-2.5 md:px-2"
+                                        size="lg"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                                     >
-                                        <item.icon />
-                                        <span>{item.title}</span>
+                                        <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                            <activeTeam.logo className="size-4" />
+                                        </div>
+                                        <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {activeTeam.name}
+                      </span>
+                                            <span className="truncate text-xs">
+                        {activeTeam.plan}
+                      </span>
+                                        </div>
+                                        <ChevronsUpDown className="ml-auto" />
                                     </SidebarMenuButton>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                                    align="start"
+                                    side="bottom"
+                                    sideOffset={4}
+                                >
+                                    <DropdownMenuLabel className="text-xs text-muted-foreground">
+                                        Teams
+                                    </DropdownMenuLabel>
+                                    {data.teams.map((team, index) => (
+                                        <DropdownMenuItem
+                                            key={team.name}
+                                            onClick={() => setActiveTeam(team)}
+                                            className="gap-2 p-2"
+                                        >
+                                            <div className="flex size-6 items-center justify-center rounded-sm border">
+                                                <team.logo className="size-4 shrink-0" />
+                                            </div>
+                                            {team.name}
+                                            <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
+                                        </DropdownMenuItem>
+                                    ))}
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem className="gap-2 p-2">
+                                        <div className="flex size-6 items-center justify-center rounded-md border bg-background">
+                                            <Plus className="size-4" />
+                                        </div>
+                                        <div className="font-medium text-muted-foreground">
+                                            Add team
+                                        </div>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarHeader>
+                <SidebarContent>
+                    <SidebarGroup>
+                        <SidebarGroupLabel>Platform</SidebarGroupLabel>
+                        <SidebarMenu>
+                            {data.navMain.map((item) => (
+                                <Collapsible
+                                    key={item.title}
+                                    asChild
+                                    defaultOpen={item.isActive}
+                                    className="group/collapsible"
+                                >
+                                    <SidebarMenuItem>
+                                        <CollapsibleTrigger asChild>
+                                            <SidebarMenuButton tooltip={item.title}>
+                                                {item.icon && <item.icon />}
+                                                <span>{item.title}</span>
+                                                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                            </SidebarMenuButton>
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent>
+                                            <SidebarMenuSub>
+                                                {item.items?.map((subItem) => (
+                                                    <SidebarMenuSubItem key={subItem.title}>
+                                                        <SidebarMenuSubButton asChild>
+                                                            <a href={subItem.url}>
+                                                                <span>{subItem.title}</span>
+                                                            </a>
+                                                        </SidebarMenuSubButton>
+                                                    </SidebarMenuSubItem>
+                                                ))}
+                                            </SidebarMenuSub>
+                                        </CollapsibleContent>
+                                    </SidebarMenuItem>
+                                </Collapsible>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroup>
+                    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+                        <SidebarGroupLabel>Projects</SidebarGroupLabel>
+                        <SidebarMenu>
+                            {data.projects.map((item) => (
+                                <SidebarMenuItem key={item.name}>
+                                    <SidebarMenuButton asChild>
+                                        <a href={item.url}>
+                                            <item.icon />
+                                            <span>{item.name}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <SidebarMenuAction showOnHover>
+                                                <MoreHorizontal />
+                                                <span className="sr-only">More</span>
+                                            </SidebarMenuAction>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent
+                                            className="w-48 rounded-lg"
+                                            side="bottom"
+                                            align="end"
+                                        >
+                                            <DropdownMenuItem>
+                                                <Folder className="text-muted-foreground" />
+                                                <span>View Project</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem>
+                                                <Forward className="text-muted-foreground" />
+                                                <span>Share Project</span>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem>
+                                                <Trash2 className="text-muted-foreground" />
+                                                <span>Delete Project</span>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </SidebarMenuItem>
-                              ))}
-                          </SidebarMenu>
-                      </SidebarGroupContent>
-                  </SidebarGroup>
-              </SidebarContent>
-              <SidebarFooter>
-                  <NavUser user={data.user} />
-              </SidebarFooter>
-          </Sidebar>
-
-          {/* This is the second sidebar */}
-          {/* We disable collapsible and let it fill remaining space */}
-          <Sidebar collapsible="none" className="hidden flex-1 md:flex">
-              <SidebarHeader className="gap-3.5  p-4">
-                  <div className="flex w-full items-center justify-between">
-                      <div className="text-base font-medium text-foreground">
-                          {activeItem.title}
-                      </div>
-                      <Label className="flex items-center gap-2 text-sm">
-                          <span>Unreads</span>
-                          <Switch className="shadow-none" />
-                      </Label>
-                  </div>
-                  <SidebarInput placeholder="Type to search..." />
-              </SidebarHeader>
-              <SidebarContent>
-                  <SidebarGroup className="px-0">
-                      <SidebarGroupContent>
-                          {mails.map((mail) => (
-                            <a
-                              href="#"
-                              key={mail.email}
-                              className="flex flex-col items-start gap-2 whitespace-nowrap  p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                            >
-                                <div className="flex w-full items-center gap-2">
-                                    <span>{mail.name}</span>{" "}
-                                    <span className="ml-auto text-xs">{mail.date}</span>
-                                </div>
-                                <span className="font-medium">{mail.subject}</span>
-                                <span className="line-clamp-2 w-[260px] whitespace-break-spaces text-xs">
-                    {mail.teaser}
-                  </span>
-                            </a>
-                          ))}
-                      </SidebarGroupContent>
-                  </SidebarGroup>
-              </SidebarContent>
-          </Sidebar>
-      </Sidebar>
-    )
-}
-
-function NavUser({
-                     user,
-                 }: {
-    user: {
-        name: string
-        email: string
-        avatar: string
-    }
-}) {
-    const { isMobile } = useSidebar()
-
-    return (
-      <SidebarMenu>
-          <SidebarMenuItem>
-              <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                      <SidebarMenuButton
-                        size="lg"
-                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground md:h-8 md:p-0"
-                      >
-                          <Avatar className="h-8 w-8 rounded-lg">
-                              <AvatarImage src={user.avatar} alt={user.name} />
-                              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                          </Avatar>
-                          <div className="grid flex-1 text-left text-sm leading-tight">
-                              <span className="truncate font-semibold">{user.name}</span>
-                              <span className="truncate text-xs">{user.email}</span>
-                          </div>
-                          <ChevronsUpDown className="ml-auto size-4" />
-                      </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                    side={isMobile ? "bottom" : "right"}
-                    align="end"
-                    sideOffset={4}
-                  >
-                      <DropdownMenuLabel className="p-0 font-normal">
-                          <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                              <Avatar className="h-8 w-8 rounded-lg">
-                                  <AvatarImage src={user.avatar} alt={user.name} />
-                                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                              </Avatar>
-                              <div className="grid flex-1 text-left text-sm leading-tight">
-                                  <span className="truncate font-semibold">{user.name}</span>
-                                  <span className="truncate text-xs">{user.email}</span>
-                              </div>
-                          </div>
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                          <DropdownMenuItem>
-                              <Sparkles />
-                              Upgrade to Pro
-                          </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                          <DropdownMenuItem>
-                              <BadgeCheck />
-                              Account
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                              <CreditCard />
-                              Billing
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                              <Bell />
-                              Notifications
-                          </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>
-                          <LogOut />
-                          Log out
-                      </DropdownMenuItem>
-                  </DropdownMenuContent>
-              </DropdownMenu>
-          </SidebarMenuItem>
-      </SidebarMenu>
+                            ))}
+                            <SidebarMenuItem>
+                                <SidebarMenuButton className="text-sidebar-foreground/70">
+                                    <MoreHorizontal className="text-sidebar-foreground/70" />
+                                    <span>More</span>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroup>
+                </SidebarContent>
+                <SidebarFooter>
+                    <SidebarMenu>
+                        <SidebarMenuItem>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <SidebarMenuButton
+                                        size="lg"
+                                        className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                                    >
+                                        <Avatar className="h-8 w-8 rounded-lg">
+                                            <AvatarImage
+                                                src={data.user.avatar}
+                                                alt={data.user.name}
+                                            />
+                                            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                                        </Avatar>
+                                        <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {data.user.name}
+                      </span>
+                                            <span className="truncate text-xs">
+                        {data.user.email}
+                      </span>
+                                        </div>
+                                        <ChevronsUpDown className="ml-auto size-4" />
+                                    </SidebarMenuButton>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                                    side="bottom"
+                                    align="end"
+                                    sideOffset={4}
+                                >
+                                    <DropdownMenuLabel className="p-0 font-normal">
+                                        <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                                            <Avatar className="h-8 w-8 rounded-lg">
+                                                <AvatarImage
+                                                    src={data.user.avatar}
+                                                    alt={data.user.name}
+                                                />
+                                                <AvatarFallback className="rounded-lg">
+                                                    CN
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="grid flex-1 text-left text-sm leading-tight">
+                        <span className="truncate font-semibold">
+                          {data.user.name}
+                        </span>
+                                                <span className="truncate text-xs">
+                          {data.user.email}
+                        </span>
+                                            </div>
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <Sparkles />
+                                            Upgrade to Pro
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            <BadgeCheck />
+                                            Account
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <CreditCard />
+                                            Billing
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Bell />
+                                            Notifications
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        <LogOut />
+                                        Log out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    </SidebarMenu>
+                </SidebarFooter>
+                <SidebarRail />
+            </Sidebar>
+            <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                    <div className="flex items-center gap-2 px-4">
+                        <SidebarTrigger className="-ml-1" />
+                        <Separator orientation="vertical" className="mr-2 h-4" />
+                        <Breadcrumb>
+                            <BreadcrumbList>
+                                <BreadcrumbItem className="hidden md:block">
+                                    <BreadcrumbLink href="#">
+                                        Building Your Application
+                                    </BreadcrumbLink>
+                                </BreadcrumbItem>
+                                <BreadcrumbSeparator className="hidden md:block" />
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </BreadcrumbList>
+                        </Breadcrumb>
+                    </div>
+                </header>
+                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+                    <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+                        <div className="aspect-video rounded-xl bg-muted/50" />
+                        <div className="aspect-video rounded-xl bg-muted/50" />
+                        <div className="aspect-video rounded-xl bg-muted/50" />
+                    </div>
+                    <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+                </div>
+            </SidebarInset>
+        </SidebarProvider>
     )
 }
