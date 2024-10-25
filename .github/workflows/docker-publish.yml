@@ -35,3 +35,8 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/front-render:latest
+
+      # HTTP call to Render API to trigger redeploy
+      - name: Trigger Render Redeploy
+        run: |
+          curl -X POST ${{ secrets.DEPLOY_HOOK }}

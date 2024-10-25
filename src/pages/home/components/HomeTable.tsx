@@ -38,38 +38,34 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-const data: Payment[] = [
-    {
-        id: "m5gr84i9",
-        amount: 316,
-        status: "success",
-        email: "ken99@yahoo.com",
-    },
-    {
-        id: "3u1reuv4",
-        amount: 242,
-        status: "success",
-        email: "Abe45@gmail.com",
-    },
-    {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        amount: 874,
-        status: "success",
-        email: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        amount: 721,
-        status: "failed",
-        email: "carmella@hotmail.com",
-    },
-]
+export const fetchPayments = async (): Promise<Payment[]> => {
+    try {
+        // Fetch users from the API
+        const response = await axios.get('https://server-render-9d8m.onrender.com/users');
+        const users = response.data;
+
+        // Map users to Payment format
+        const payments: Payment[] = users.map((user: any) => ({
+            id: user._id,
+            amount: user.name.length,  // Example of setting `amount`, customize as needed
+            status: user.surname,  // Map status based on surname or other rules
+            email: user.email,
+        }));
+
+        return payments;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return [];
+    }
+};
+
+const [data, setData] = React.useState<Payment[]>([]);
+
+React.useEffect(() => {
+    fetchPayments().then((payments) => {
+        setData(payments);
+    });
+}, []);
 
 export type Payment = {
     id: string
