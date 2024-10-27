@@ -1,4 +1,5 @@
 import * as React from "react"
+import axios from "axios"
 import {
     CaretSortIcon,
     ChevronDownIcon,
@@ -38,35 +39,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export const fetchPayments = async (): Promise<Payment[]> => {
-    try {
-        // Fetch users from the API
-        const response = await axios.get('https://server-render-9d8m.onrender.com/users');
-        const users = response.data;
-
-        // Map users to Payment format
-        const payments: Payment[] = users.map((user: any) => ({
-            id: user._id,
-            amount: user.name.length,  // Example of setting `amount`, customize as needed
-            status: user.surname,  // Map status based on surname or other rules
-            email: user.email,
-        }));
-
-        return payments;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-        return [];
-    }
-};
-
-const [data, setData] = React.useState<Payment[]>([]);
-
-React.useEffect(() => {
-    fetchPayments().then((payments) => {
-        setData(payments);
-    });
-}, []);
-
 export type Payment = {
     id: string
     amount: number
@@ -98,13 +70,6 @@ export const columns: ColumnDef<Payment>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
-    },
-    {
         accessorKey: "email",
         header: ({ column }) => {
             return (
@@ -120,19 +85,18 @@ export const columns: ColumnDef<Payment>[] = [
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
+        accessorKey: "status",
+        header: "Surname",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("status")}</div>
+        ),
+    },
+    {
         accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("amount"))
-
-            // Format the amount as a dollar amount
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
-
-            return <div className="text-right font-medium">{formatted}</div>
-        },
+        header: "Name",
+        cell: ({ row }) => (
+            <div className="capitalize">{row.getValue("amount")}</div>
+        ),
     },
     {
         id: "actions",
@@ -166,6 +130,41 @@ export const columns: ColumnDef<Payment>[] = [
 ]
 
 export function HomeTable() {
+    const fetchPayments = async (): Promise<Payment[]> => {
+        try {
+            // Fetch users from the API
+            let response;
+            let count = 0;
+            do {
+                response = await axios.get('https://server-render-9d8m.onrender.com/users');
+                console.log(response.data);
+                console.log(count);
+                count += 1;
+            } while (response.data.length != 0 && !response.data);
+            const users = response.data;
+
+            // Map users to Payment format
+            const payments: Payment[] = users.map((user: any) => ({
+                id: user._id,
+                amount: user.name,  // Example of setting `amount`, customize as needed
+                status: user.surname,  // Map status based on surname or other rules
+                email: user.email,
+            }));
+
+            return payments;
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            return [];
+        }
+    };
+
+    const [data, setData] = React.useState<Payment[]>([]);
+
+    React.useEffect(() => {
+        fetchPayments().then((payments) => {
+            setData(payments);
+        });
+    }, []);
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
